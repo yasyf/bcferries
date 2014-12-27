@@ -1,5 +1,6 @@
 import requests, functools32
 from bs4 import BeautifulSoup
+from urlparse import urlparse
 
 class BCFerriesAPI(object):
   def __init__(self, api_root):
@@ -18,6 +19,9 @@ class BCFerriesAPI(object):
     return self.bs
 
   def set_page(self, url):
+    if 'http' not in url:
+      o = urlparse(self.api_root)
+      url = "{}://{}{}".format(o.scheme, o.hostname, url)
     self.bs = self.__get_page(url)
 
   def find_by_predicate(self, tag, predicate):
