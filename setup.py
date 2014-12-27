@@ -1,0 +1,22 @@
+from setuptools import setup
+
+VERSION = '0.0.1'
+
+def readme():
+  with open('README.md') as f:
+    return f.read()
+
+setup(
+  name = 'foxtrot-client',
+  packages = ['bcferries'],
+  version = VERSION,
+  description = 'BC Ferries Python Library',
+  long_description = readme(),
+  author = 'Yasyf Mohamedali',
+  author_email = 'yasyfm@gmail.com',
+  url = 'https://github.com/yasyf/bcferries',
+  download_url = 'https://github.com/yasyf/bcferries/tarball/' + VERSION,
+  license = 'MIT',
+  keywords = ['bc ferries', 'schedule'],
+  install_requires = ['requests', 'beautifulsoup4', 'python-dateutil', 'functools32']
+)
