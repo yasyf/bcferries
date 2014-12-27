@@ -9,7 +9,7 @@ This is the Python client library for interacting with information published to 
 ## Usage
 
 ```python
-from bcferries.bcferries import BCFerries
+from bcferries import BCFerries
 
 bc = BCFerries()
 terminals = bc.terminals()

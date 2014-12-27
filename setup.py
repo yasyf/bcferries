@@ -7,7 +7,7 @@ def readme():
     return f.read()
 
 setup(
-  name = 'foxtrot-client',
+  name = 'bcferries',
   packages = ['bcferries'],
   version = VERSION,
   description = 'BC Ferries Python Library',
