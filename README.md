@@ -35,6 +35,14 @@ routes['Tsawwassen to Duke Point'] == routes['Tsaw to DP']
 # True
 ```
 
+There is also fuzzy time matching on keys that represent a nearby time.
+```python
+r = routes['HBay to DBay']
+schedule = r.schedule()
+schedule['6:12 PM']
+# BCFerriesScheduledCrossing (Queen of Cowichan at 6:30 PM)
+```
+
 `bcferries` caches the last 128 API calls by default. You can change this to any integer you want, or set it to zero to disable caching.
 
 ```python

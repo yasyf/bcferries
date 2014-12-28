@@ -5,9 +5,9 @@ class BCFerriesScheduledCrossing(BCFerriesAbstractObject):
   def __init__(self, name, sailing_time, time_row):
     super(BCFerriesScheduledCrossing, self).__init__(self)
 
-    self.name = name
-    self.sailing_time = sailing_time
     scheduled_dep, actual_dep, arrival, self.status, _ = time_row
+    self.name = '{} at {}'.format(name, scheduled_dep)
+    self.sailing_time = sailing_time
     self.scheduled_departure = dateutil.parser.parse(scheduled_dep, fuzzy=True) if scheduled_dep else None
     self.actual_departure = dateutil.parser.parse(actual_dep, fuzzy=True) if actual_dep else None
     self.arrival = dateutil.parser.parse(arrival, fuzzy=True) if arrival else None
