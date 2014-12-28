@@ -1,6 +1,5 @@
 beautifulsoup4==4.3.2
 functools32==3.2.3-1
-fuzzywuzzy==0.4.0
 python-Levenshtein==0.12.0
 python-dateutil==2.3
 requests==2.5.1
