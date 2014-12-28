@@ -10,7 +10,7 @@ class FuzzyDict(collections.MutableMapping):
   @functools32.lru_cache(128)
   def __get_best_time_match(self, key):
     try:
-      key = parse(key)
+      key = parse(key.uppper())
       def diff(x):
         if key > x[1]:
           return key - x[1]
