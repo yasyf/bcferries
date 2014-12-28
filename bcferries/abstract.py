@@ -16,17 +16,18 @@ class BCFerriesAbstractObject(object):
   def _register_properties(self, props):
     self.__props.update(props)
 
-  def to_dict(self):
+  def to_dict(self, fuzzy=False):
     d = {}
+    dict_f = FuzzyDict if fuzzy else dict
+    operations = [
+      lambda x: x(),
+      lambda x: dict_f({k:v.to_dict() for k,v in x.items()}),
+      lambda x: [v.to_dict() for v in x],
+      lambda x: x.to_dict(),
+      lambda x: x.isoformat()
+    ]
     for prop in self.__props:
       val = getattr(self, prop)
-      operations = [
-        lambda x: x(),
-        lambda x: FuzzyDict({k:v.to_dict() for k,v in x.items()}),
-        lambda x: [v.to_dict() for v in x],
-        lambda x: x.to_dict(),
-        lambda x: x.isoformat()
-      ]
       for operation in operations:
         try:
           val = operation(val)
@@ -36,7 +37,7 @@ class BCFerriesAbstractObject(object):
     return d
 
   def to_fuzzy_dict(self):
-    return FuzzyDict(self.to_dict())
+    return FuzzyDict(self.to_dict(fuzzy=True))
 
   def to_json(self):
     return json.dumps(self.to_dict())

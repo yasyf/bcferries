@@ -1,7 +1,7 @@
 from abstract import BCFerriesAbstractObject, cacheable, fuzzy
 from crossing import BCFerriesCrossing
 from scheduled import BCFerriesScheduledCrossing
-import re
+import re, datetime
 
 class BCFerriesRoute(BCFerriesAbstractObject):
   def __init__(self, api, index):
@@ -20,6 +20,11 @@ class BCFerriesRoute(BCFerriesAbstractObject):
   def crossings(self):
     rows = self.__time_block.find_all('tr')
     return {x.find('td').text:BCFerriesCrossing(self.name, x, self.__api) for x in rows}
+
+  def next_crossing(self):
+    crossings = self.crossings()
+    if crossings:
+      return min(crossings.values(), key=lambda x: x.time - datetime.datetime.now())
 
   @fuzzy
   @cacheable
