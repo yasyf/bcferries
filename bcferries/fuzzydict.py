@@ -10,12 +10,8 @@ class FuzzyDict(collections.MutableMapping):
   @functools32.lru_cache(128)
   def __get_best_time_match(self, key):
     try:
-      key = parse(key.upper())
-      def diff(x):
-        if key > x[1]:
-          return key - x[1]
-        else:
-          return x[1] - key
+      key = parse(str(key).upper())
+      diff = lambda x: key - x if key > x else x - key
       return min(map(lambda x: (x, diff(parse(x))), self.d.keys()), key=lambda x: x[1])
     except (ValueError, TypeError):
       return None
