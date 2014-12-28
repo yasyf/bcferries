@@ -1,9 +1,9 @@
 from setuptools import setup
-
-VERSION = '0.0.4'
+from bcferries import VERSION
 
 def readme():
-  with open('README.md') as f:
+  # Generated with `pandoc --from=markdown --to=rst --output=README.rst README.md`
+  with open('README.rst') as f:
     return f.read()
 
 setup(

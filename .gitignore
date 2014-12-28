@@ -5,7 +5,7 @@ cache/
 tmp/
 .ignore/
 
-*/target
+README.rst
 
 # C extensions
 *.so
