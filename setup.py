@@ -18,5 +18,8 @@ setup(
   download_url = 'https://github.com/yasyf/bcferries/tarball/' + VERSION,
   license = 'MIT',
   keywords = ['bc ferries', 'schedule'],
-  install_requires = ['requests', 'beautifulsoup4', 'python-dateutil', 'functools32']
+  install_requires = ['requests', 'beautifulsoup4', 'python-dateutil', 'functools32', 'fuzzywuzzy'],
+  extras_require = {
+    'Levenshtein': ['python-Levenshtein']
+  }
 )

@@ -1,6 +1,6 @@
 from api import BCFerriesAPI
 from terminal import BCFerriesTerminal
-from abstract import cacheable
+from abstract import cacheable, fuzzy
 
 class BCFerries(object):
 
@@ -16,6 +16,7 @@ class BCFerries(object):
     links = [x.find('a') for x in divs]
     return {x.text:BCFerriesTerminal(x.text, x.get('href'), self.__api) for x in links}
 
+  @fuzzy
   @cacheable
   def terminal(self, name):
     return self.terminals()[name]

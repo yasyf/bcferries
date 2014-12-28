@@ -1,4 +1,4 @@
-from abstract import BCFerriesAbstractObject, cacheable
+from abstract import BCFerriesAbstractObject, cacheable, fuzzy
 from crossing import BCFerriesCrossing
 from scheduled import BCFerriesScheduledCrossing
 import re
@@ -12,10 +12,12 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     self.oversize_waits = int(self.__api.find_by_selector('div.car_waits > div.td > div')[index + 1].text)
     self.__schedule_url = self.__api.find_by_selector('div.buttons')[index].find('a').get('href')
 
+  @fuzzy
   def crossings(self):
     rows = self.__time_block.find_all('tr')
     return {x.find('td').text:BCFerriesCrossing(self.name, x, self.__api) for x in rows}
 
+  @fuzzy
   @cacheable
   def schedule(self):
     self.__api.set_page(self.__schedule_url)

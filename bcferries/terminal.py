@@ -1,4 +1,4 @@
-from abstract import BCFerriesAbstractObject, cacheable
+from abstract import BCFerriesAbstractObject, cacheable, fuzzy
 import re, dateutil.parser
 from route import BCFerriesRoute
 
@@ -15,6 +15,7 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
     time = re.match(r'Conditions as at (.*)', updated.text.strip()).group(1)
     return dateutil.parser.parse(time)
 
+  @fuzzy
   @cacheable
   def routes(self):
     self.__api.set_page(self.url)
