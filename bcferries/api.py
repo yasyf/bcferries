@@ -4,7 +4,7 @@ from urlparse import urlparse
 
 class BCFerriesAPI(object):
 
-  cache_last = 5
+  cache_last = 8
   ignore_cache = False
 
   def __init__(self, api_root):
