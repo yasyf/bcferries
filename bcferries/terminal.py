@@ -1,4 +1,4 @@
-from abstract import BCFerriesAbstractObject
+from abstract import BCFerriesAbstractObject, cacheable
 import re, dateutil.parser
 from route import BCFerriesRoute
 
@@ -8,12 +8,14 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
     self.url = url
     self.__api = api
 
+  @cacheable
   def updated_at(self):
     self.__api.set_page(self.url)
     updated = self.__api.find_by_selector('div.conditions > div.white-small-text')[0]
     time = re.match(r'Conditions as at (.*)', updated.text.strip()).group(1)
     return dateutil.parser.parse(time)
 
+  @cacheable
   def routes(self):
     self.__api.set_page(self.url)
     divs = self.__api.find_by_selector('div.ferry_name > div.td')
