@@ -38,5 +38,5 @@ setup(
     'Programming Language :: Python :: 3.3',
     'Programming Language :: Python :: 3.4'
   ],
-   use_2to3 = True
+  use_2to3 = True
 )
