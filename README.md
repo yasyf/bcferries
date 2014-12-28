@@ -1,6 +1,6 @@
 # BC Ferries Python Library
 
-This is the Python client library for interacting with information published to the [BC Ferries mobile site](http://mobile.bcferries.com/). It is essentially a wrapper around a BeautifulSoup scraper.
+This is the Python client library for interacting with information published on the [BC Ferries mobile site](http://mobile.bcferries.com/). It is essentially a wrapper around a BeautifulSoup-powered scraper. Better documentation and tests are still in the works; feel free to contribute!
 
 ## Installation
 
@@ -58,7 +58,7 @@ terminals = bc.terminals() # initial call takes multiple seconds
 terminals = bc.terminals() # repeated call returns almost instantly
 terminals = bc.terminals(ignore_cache=True) # takes multiple seconds to return
 
-bc.flush_cache() # wipes   the cache
+bc.flush_cache() # wipes the cache
 ```
 
 You can export any subset of information with a call to `to_dict` on any object. You can also use `to_fuzzy_dict` and `to_json` as needed. To export all available information, call any of these methods on a `BCFerries` instance, and be prepared to wait a while.
