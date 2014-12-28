@@ -25,3 +25,7 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
     self.__api.set_page(self.__url)
     divs = self.__api.find_by_selector('div.ferry_name > div.td')
     return {x.text:BCFerriesRoute(self.__api, i) for i,x in enumerate(divs)}
+
+  @cacheable
+  def route(self, name):
+    return self.routes()[name]

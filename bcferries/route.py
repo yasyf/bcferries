@@ -21,6 +21,9 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     rows = self.__time_block.find_all('tr')
     return {x.find('td').text:BCFerriesCrossing(self.name, x, self.__api) for x in rows}
 
+  def crossing(self, name):
+    return self.crossings()[name]
+
   def next_crossing(self):
     crossings = self.crossings()
     if crossings:
@@ -42,3 +45,6 @@ class BCFerriesRoute(BCFerriesAbstractObject):
       i += 2
     return scheduled
 
+  @cacheable
+  def scheduled(self, name):
+    return self.schedule()[name]

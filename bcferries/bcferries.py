@@ -18,6 +18,7 @@ class BCFerries(BCFerriesAbstractObject):
   def flush_cache(self):
     self.__api._flush_cache()
 
+  @fuzzy
   @cacheable
   def terminals(self):
     self.__api.set_page(self.__api.api_root)
@@ -25,7 +26,6 @@ class BCFerries(BCFerriesAbstractObject):
     links = [x.find('a') for x in divs]
     return {x.text:BCFerriesTerminal(x.text, x.get('href'), self.__api) for x in links}
 
-  @fuzzy
   @cacheable
   def terminal(self, name):
     return self.terminals()[name]
