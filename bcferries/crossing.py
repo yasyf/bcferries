@@ -7,7 +7,7 @@ class BCFerriesCrossing(BCFerriesAbstractObject):
     super(BCFerriesCrossing, self).__init__(self)
 
     self.route_name = name
-    self.__api = api
+    self._api = api
 
     time, percent_full = row.find_all('td')
     self.time = dateutil.parser.parse(time.text)

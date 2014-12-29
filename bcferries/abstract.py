@@ -1,6 +1,5 @@
 import json
 from functools import wraps
-from api import BCFerriesAPI
 from fuzzydict import FuzzyDict
 
 class BCFerriesAbstractObject(object):
@@ -47,9 +46,9 @@ def cacheable(f):
   def wrapper(self, *args, **kwargs):
     ignore_cache = kwargs.pop('ignore_cache', False)
     if ignore_cache is True:
-      BCFerriesAPI.ignore_cache = True
+      self._api.ignore_cache = True
       result = f(self, *args, **kwargs)
-      BCFerriesAPI.ignore_cache = False
+      self._api.ignore_cache = False
       return result
     else:
       return f(self, *args, **kwargs)
