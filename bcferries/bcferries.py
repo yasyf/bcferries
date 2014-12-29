@@ -1,16 +1,20 @@
 from api import BCFerriesAPI
 from terminal import BCFerriesTerminal
-from abstract import BCFerriesAbstractObject, cacheable, fuzzy
+from abstract import BCFerriesAbstractObject
+from decorators import cacheable, fuzzy
 from urlparse import urlparse
+from geopy.distance import distance
+import functools32, os
 
 class BCFerries(BCFerriesAbstractObject):
 
   DEFAULT_API_ROOT = 'http://mobile.bcferries.com/'
+  GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
-  def __init__(self, api_root=DEFAULT_API_ROOT):
+  def __init__(self, api_root=DEFAULT_API_ROOT, google_maps_api_key=GOOGLE_MAPS_API_KEY):
     super(BCFerries, self).__init__(self)
 
-    self._api = BCFerriesAPI(api_root)
+    self._api = BCFerriesAPI(api_root, google_maps_api_key)
     self.name = urlparse(api_root).hostname
 
     self._register_properties(['terminals'])
@@ -29,3 +33,8 @@ class BCFerries(BCFerriesAbstractObject):
   @cacheable
   def terminal(self, name):
     return self.terminals()[name]
+
+  @functools32.lru_cache(128)
+  def nearest_terminal(self, *args):
+    loc = self._api.geocode(*args)
+    return min(self.terminals().values(), key=lambda x: distance(loc[1:][0], x.location()[1:][0]))

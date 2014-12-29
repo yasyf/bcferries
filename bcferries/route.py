@@ -1,6 +1,8 @@
-from abstract import BCFerriesAbstractObject, cacheable, fuzzy
+from abstract import BCFerriesAbstractObject
+from decorators import cacheable, fuzzy
 from crossing import BCFerriesCrossing
 from scheduled import BCFerriesScheduledCrossing
+from helpers import to_int
 import re, datetime
 
 class BCFerriesRoute(BCFerriesAbstractObject):
@@ -10,8 +12,8 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     self._api = api
     self.name = self._api.find_by_selector('div.ferry_name > div.td')[index].text
     self.__time_block = self._api.find_by_selector('div.time_block > div.td > div')[index]
-    self.car_waits = int(self._api.find_by_selector('div.car_waits > div.td > div')[index].text)
-    self.oversize_waits = int(self._api.find_by_selector('div.car_waits > div.td > div')[index + 1].text)
+    self.car_waits = to_int(self._api.find_by_selector('div.car_waits > div.td > div')[index].text)
+    self.oversize_waits = to_int(self._api.find_by_selector('div.car_waits > div.td > div')[index + 1].text)
     self.__schedule_url = self._api.find_by_selector('div.buttons')[index].find('a').get('href')
 
     self._register_properties(['car_waits', 'oversize_waits', 'crossings', 'schedule'])

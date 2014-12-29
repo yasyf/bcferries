@@ -1,4 +1,5 @@
-from abstract import BCFerriesAbstractObject, cacheable, fuzzy
+from abstract import BCFerriesAbstractObject
+from decorators import cacheable, fuzzy, lazy_cache
 import re, dateutil.parser, datetime
 from route import BCFerriesRoute
 
@@ -36,3 +37,8 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
     next_crossings = [x for x in next_crossings if x]
     if next_crossings:
       return min(next_crossings, key=lambda x: x.time - datetime.datetime.now())
+
+  @lazy_cache
+  def location(self):
+    lat_lon = self._api.geocode("{} BC Ferry Terminal".format(self.name))
+    return self._api.reverse(lat_lon[1:][0], exactly_one=True)

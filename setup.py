@@ -24,7 +24,8 @@ setup(
     'beautifulsoup4',
     'python-dateutil',
     'functools32',
-    'python-Levenshtein'
+    'python-Levenshtein',
+    'geopy'
   ],
   classifiers= [
     'License :: OSI Approved :: MIT License',

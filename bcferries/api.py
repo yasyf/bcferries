@@ -1,22 +1,32 @@
 import requests, functools32, datetime
 from bs4 import BeautifulSoup
 from urlparse import urlparse
+from geopy.geocoders import GoogleV3
 
 class BCFerriesAPI(object):
 
   cache_size = 16
   cache_for = datetime.timedelta(minutes=5)
 
-  def __init__(self, api_root):
+  def __init__(self, api_root, google_maps_api_key=None):
     self.api_root = api_root
     self.ignore_cache = False
     self.last_cleared = datetime.datetime.now()
     self.set_page(api_root)
+    self.g = GoogleV3(domain='maps.google.ca', api_key=google_maps_api_key)
 
   @functools32.lru_cache(cache_size)
   def __get_page(self, url):
     html = requests.get(url).text
     return BeautifulSoup(html)
+
+  @functools32.lru_cache(128)
+  def geocode(self, *args, **kwargs):
+    return self.g.geocode(*args, **kwargs)
+
+  @functools32.lru_cache(128)
+  def reverse(self, *args, **kwargs):
+    return self.g.reverse(*args, **kwargs)
 
   def _flush_cache(self):
     self.__get_page.cache_clear()

@@ -6,12 +6,19 @@ This is the Python client library for interacting with information published on 
 
 `pip install bcferries`
 
-## Usage
+## Setup
+
+Some functions require interaction with a geocoding service; the Google Maps API is used for this. In order to prevent severe rate limiting, you'll want to acquire an API key. To let `bcferries` know about this key, set it as the `GOOGLE_MAPS_API_KEY` environment variable. Alternatively, you can pass it as an optional keyword argument to the constructor.
 
 ```python
 from bcferries import BCFerries
 
-bc = BCFerries()
+bc = BCFerries(google_maps_api_key='xxx-xxx-xxx')
+```
+
+## Usage
+
+```python
 terminals = bc.terminals()
 # {u'Horseshoe Bay': BCFerriesTerminal (Horseshoe Bay), u'Tsawwassen': BCFerriesTerminal (Tsawwassen)}
 t = terminals['Tsawwassen']
@@ -27,6 +34,8 @@ crossing = r.crossings()['10:45pm']
 crossing.capacity
 # BCFerriesCapacity (18% Full)
 ```
+
+## Fuzzy Results
 
 All returned dictionaries have fuzzy string matching on they keys.
 
@@ -55,6 +64,8 @@ schedule[datetime.datetime.now()]
 # BCFerriesScheduledCrossing (Coastal Renaissance at 10:40 AM)
 ```
 
+## Caching
+
 `bcferries` caches the 16 most used API calls for up to five minutes by default. You can change this behavior as below. This must be done before creating a `BCFerries` object.
 
 ```python
@@ -74,6 +85,8 @@ terminals = bc.terminals(ignore_cache=True) # takes multiple seconds to return
 
 bc.flush_cache() # wipes the cache
 ```
+
+## Export
 
 You can export any subset of information with a call to `to_dict` on any object. You can also use `to_fuzzy_dict` and `to_json` as needed. To export all available information, call any of these methods on a `BCFerries` instance, and be prepared to wait a while.
 
