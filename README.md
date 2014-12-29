@@ -20,7 +20,11 @@ bc = BCFerries(google_maps_api_key='xxx-xxx-xxx')
 
 ```python
 bc = BCFerries()
+```
 
+### Terminals
+
+```python
 bc.nearest_terminal('Qualicum Beach')
 # BCFerriesTerminal(Nanaimo (Duke Pt))
 
@@ -34,7 +38,11 @@ t.next_crossing()
 # BCFerriesCrossing(Tsawwassen to Duke Point at 5:15am)
 t.location().address
 # u'Ferry Causeway, Delta, BC V4M, Canada'
+```
 
+### Routes
+
+```python
 routes = t.routes()
 # {u'Tsawwassen to Duke Point': BCFerriesRoute(Tsawwassen to Duke Point)}
 r = routes['Tsawwassen to Duke Point']
@@ -46,12 +54,20 @@ r.distance()
 # Distance(61.9591068557)
 r.car_waits
 # 0
+```
 
+### Crossings
+
+```python
 crossing = r.crossings()['10:45pm']
 # BCFerriesCrossing(Tsawwassen to Duke Point at 5:45pm)
 crossing.capacity
 # BCFerriesCapacity(18% Full)
+```
 
+### Schedules
+
+```python
 schedule = r.scheduled('12:45 PM')
 # BCFerriesScheduledCrossing(Queen of Alberni at 12:45 PM)
 schedule.status
