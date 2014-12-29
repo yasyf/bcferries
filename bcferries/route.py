@@ -24,7 +24,9 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     self._register_properties(['car_waits', 'oversize_waits', 'crossings', 'schedule', 'distance', 'from_', 'to'])
 
   def distance(self):
-    return distance(self.from_.location()[1], self.to.location()[1])
+    if self.from_ and self.to:
+      return distance(self.from_.location()[1], self.to.location()[1])
+    return 0
 
   @fuzzy
   @cacheable
