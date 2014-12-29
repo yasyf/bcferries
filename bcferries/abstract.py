@@ -1,4 +1,4 @@
-import json
+import json, datetime
 from fuzzydict import FuzzyDict
 from geopy.location import Location
 from geopy.distance import Distance
@@ -14,6 +14,8 @@ def clean_special_types(x):
     return list(x)
   if isinstance(x, Distance):
     return x.km
+  if isinstance(x, datetime.timedelta):
+    return x.seconds
   if hasattr(x, 'isoformat'):
     return x.isoformat()
   return x
