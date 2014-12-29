@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>bcferries by yasyf</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>bcferries</h1>
+          <h2>BC Ferries Python Library</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/yasyf/bcferries/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/yasyf/bcferries/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/yasyf/bcferries" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="bc-ferries-python-library" class="anchor" href="#bc-ferries-python-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>BC Ferries Python Library</h1>
+
+<p>This is the Python client library for interacting with information published on the <a href="http://mobile.bcferries.com/">BC Ferries mobile site</a>. It is essentially a wrapper around a BeautifulSoup-powered scraper. Better documentation and tests are still in the works; feel free to contribute!</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p><code>pip install bcferries</code></p>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Some functions require interaction with a geocoding service; the Google Maps API is used for this. In order to prevent severe rate limiting, you'll want to acquire an API key. To let <code>bcferries</code> know about this key, set it as the <code>GOOGLE_MAPS_API_KEY</code> environment variable. Alternatively, you can pass it as an optional keyword argument to the constructor.</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> bcferries <span class="pl-k">import</span> BCFerries
+
+bc <span class="pl-k">=</span> BCFerries(<span class="pl-vpf">google_maps_api_key</span><span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>xxx-xxx-xxx<span class="pl-pds">'</span></span>)</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight highlight-python"><pre>bc <span class="pl-k">=</span> BCFerries()</pre></div>
+
+<h3>
+<a id="terminals" class="anchor" href="#terminals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Terminals</h3>
+
+<div class="highlight highlight-python"><pre>bc.nearest_terminal(<span class="pl-s1"><span class="pl-pds">'</span>Qualicum Beach<span class="pl-pds">'</span></span>)
+<span class="pl-c"># BCFerriesTerminal(Nanaimo (Duke Pt))</span>
+
+terminals <span class="pl-k">=</span> bc.terminals()
+<span class="pl-c"># {u'Horseshoe Bay': BCFerriesTerminal(Horseshoe Bay), u'Tsawwassen': BCFerriesTerminal(Tsawwassen)}</span>
+t <span class="pl-k">=</span> terminals[<span class="pl-s1"><span class="pl-pds">'</span>Tsawwassen<span class="pl-pds">'</span></span>]
+<span class="pl-c"># BCFerriesTerminal(Tsawwassen)</span>
+t.updated_at()
+<span class="pl-c"># datetime.datetime(2014, 12, 29, 0, 4)</span>
+t.next_crossing()
+<span class="pl-c"># BCFerriesCrossing(Tsawwassen to Duke Point at 5:15am)</span>
+t.location().address
+<span class="pl-c"># u'Ferry Causeway, Delta, BC V4M, Canada'</span></pre></div>
+
+<h3>
+<a id="routes" class="anchor" href="#routes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Routes</h3>
+
+<div class="highlight highlight-python"><pre>routes <span class="pl-k">=</span> t.routes()
+<span class="pl-c"># {u'Tsawwassen to Duke Point': BCFerriesRoute(Tsawwassen to Duke Point)}</span>
+r <span class="pl-k">=</span> routes[<span class="pl-s1"><span class="pl-pds">'</span>Tsawwassen to Duke Point<span class="pl-pds">'</span></span>]
+<span class="pl-c"># BCFerriesRoute(Tsawwassen to Duke Point)</span>
+
+r.from_, r.to
+<span class="pl-c"># (BCFerriesTerminal(Tsawwassen), BCFerriesTerminal(Nanaimo (Duke Pt)))</span>
+r.distance()
+<span class="pl-c"># Distance(61.9591068557)</span>
+r.car_waits
+<span class="pl-c"># 0</span></pre></div>
+
+<h3>
+<a id="crossings" class="anchor" href="#crossings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Crossings</h3>
+
+<div class="highlight highlight-python"><pre>crossing <span class="pl-k">=</span> r.crossings()[<span class="pl-s1"><span class="pl-pds">'</span>10:45pm<span class="pl-pds">'</span></span>]
+<span class="pl-c"># BCFerriesCrossing(Tsawwassen to Duke Point at 5:45pm)</span>
+crossing.capacity
+<span class="pl-c"># BCFerriesCapacity(18% Full)</span></pre></div>
+
+<h3>
+<a id="schedules" class="anchor" href="#schedules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Schedules</h3>
+
+<div class="highlight highlight-python"><pre>schedule <span class="pl-k">=</span> r.scheduled(<span class="pl-s1"><span class="pl-pds">'</span>12:45 PM<span class="pl-pds">'</span></span>)
+<span class="pl-c"># BCFerriesScheduledCrossing(Queen of Alberni at 12:45 PM)</span>
+schedule.status
+<span class="pl-c"># u'On Time'</span>
+schedule.sailing_time
+<span class="pl-c"># datetime.timedelta(0, 7200)</span>
+schedule.is_late()
+<span class="pl-c"># False</span>
+schedule.is_departed()
+<span class="pl-c"># True</span></pre></div>
+
+<h2>
+<a id="fuzzy-results" class="anchor" href="#fuzzy-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fuzzy Results</h2>
+
+<p>All returned dictionaries have fuzzy string matching on they keys.</p>
+
+<div class="highlight highlight-python"><pre>routes[<span class="pl-s1"><span class="pl-pds">'</span>Tsawwassen to Duke Point<span class="pl-pds">'</span></span>] <span class="pl-k">==</span> routes[<span class="pl-s1"><span class="pl-pds">'</span>Tsaw to DP<span class="pl-pds">'</span></span>]
+<span class="pl-c"># True</span></pre></div>
+
+<p>There is also fuzzy time matching on keys that represent a nearby time.</p>
+
+<div class="highlight highlight-python"><pre>r <span class="pl-k">=</span> routes[<span class="pl-s1"><span class="pl-pds">'</span>HBay to DBay<span class="pl-pds">'</span></span>]
+schedule <span class="pl-k">=</span> r.schedule()
+schedule[<span class="pl-s1"><span class="pl-pds">'</span>6:12 PM<span class="pl-pds">'</span></span>]
+<span class="pl-c"># BCFerriesScheduledCrossing(Queen of Cowichan at 6:30 PM)</span></pre></div>
+
+<p><code>datetime</code> objects can also be used as keys.</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">from</span> datetime <span class="pl-k">import</span> datetime
+
+datetime.datetime.now()
+<span class="pl-c"># datetime.datetime(2014, 12, 28, 10, 42, 35, 630996)</span>
+schedule[datetime.datetime.now()]
+<span class="pl-c"># BCFerriesScheduledCrossing(Coastal Renaissance at 10:40 AM)</span></pre></div>
+
+<h2>
+<a id="caching" class="anchor" href="#caching" aria-hidden="true"><span class="octicon octicon-link"></span></a>Caching</h2>
+
+<p><code>bcferries</code> caches the 16 most used API calls for up to five minutes by default. You can change this behavior as below. This must be done before creating a <code>BCFerries</code> object.</p>
+
+<div class="highlight highlight-python"><pre><span class="pl-k">import</span> bcferries
+<span class="pl-k">import</span> datetime
+
+bcferries.set_cache_size(<span class="pl-c1">16</span>)
+bcferries.set_cache_timeout(datetime.timedelta(<span class="pl-vpf">minutes</span><span class="pl-k">=</span><span class="pl-c1">5</span>))</pre></div>
+
+<p>You can also pass any function the <code>ignore_cache</code> keyword argument to bypass the cache, or call the <code>flush_cache</code> method on <code>BCFerries</code> to clear the entire cache.</p>
+
+<div class="highlight highlight-python"><pre>terminals <span class="pl-k">=</span> bc.terminals() <span class="pl-c"># initial call takes multiple seconds</span>
+terminals <span class="pl-k">=</span> bc.terminals() <span class="pl-c"># repeated call returns almost instantly</span>
+terminals <span class="pl-k">=</span> bc.terminals(<span class="pl-vpf">ignore_cache</span><span class="pl-k">=</span><span class="pl-c1">True</span>) <span class="pl-c"># takes multiple seconds to return</span>
+
+bc.flush_cache() <span class="pl-c"># wipes the cache</span></pre></div>
+
+<h2>
+<a id="export" class="anchor" href="#export" aria-hidden="true"><span class="octicon octicon-link"></span></a>Export</h2>
+
+<p>You can export any subset of information with a call to <code>to_dict</code> on any object. You can also use <code>to_fuzzy_dict</code> and <code>to_json</code> as needed. To export all available information, call any of these methods on a <code>BCFerries</code> instance, and be prepared to wait a while.</p>
+
+<div class="highlight highlight-python"><pre>crossing.capacity
+<span class="pl-c"># BCFerriesCapacity(18% Full)</span>
+crossing.capacity.to_dict()
+<span class="pl-c"># {'passenger_filled': 32, 'mixed_filled': 4, 'name': '18% Full', 'filled': 18}</span></pre></div>
+        </section>
+
+        <footer>
+          bcferries is maintained by <a href="https://github.com/yasyf">yasyf</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
