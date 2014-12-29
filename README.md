@@ -19,22 +19,49 @@ bc = BCFerries(google_maps_api_key='xxx-xxx-xxx')
 ## Usage
 
 ```python
+bc = BCFerries()
+
+bc.nearest_terminal('Qualicum Beach')
+# BCFerriesTerminal(Nanaimo (Duke Pt))
+
 terminals = bc.terminals()
 # {u'Horseshoe Bay': BCFerriesTerminal(Horseshoe Bay), u'Tsawwassen': BCFerriesTerminal(Tsawwassen)}
 t = terminals['Tsawwassen']
 # BCFerriesTerminal(Tsawwassen)
+t.updated_at()
+# datetime.datetime(2014, 12, 29, 0, 4)
+t.next_crossing()
+# BCFerriesCrossing(Tsawwassen to Duke Point at 5:15am)
+t.location().address
+# u'Ferry Causeway, Delta, BC V4M, Canada'
 
 routes = t.routes()
 # {u'Tsawwassen to Duke Point': BCFerriesRoute(Tsawwassen to Duke Point)}
 r = routes['Tsawwassen to Duke Point']
 # BCFerriesRoute(Tsawwassen to Duke Point)
+
+r.from_, r.to
+# (BCFerriesTerminal(Tsawwassen), BCFerriesTerminal(Nanaimo (Duke Pt)))
 r.distance()
 # Distance(61.9591068557)
+r.car_waits
+# 0
 
 crossing = r.crossings()['10:45pm']
 # BCFerriesCrossing(Tsawwassen to Duke Point at 5:45pm)
 crossing.capacity
 # BCFerriesCapacity(18% Full)
+
+schedule = r.scheduled('12:45 PM')
+# BCFerriesScheduledCrossing(Queen of Alberni at 12:45 PM)
+schedule.status
+# u'On Time'
+schedule.sailing_time
+# u'2 HOURS'
+schedule.is_late()
+# False
+schedule.is_departed()
+# True
 ```
 
 ## Fuzzy Results
