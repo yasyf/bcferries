@@ -9,6 +9,7 @@ class BCFerriesScheduledCrossing(BCFerriesAbstractObject):
     super(BCFerriesScheduledCrossing, self).__init__(self)
 
     scheduled_dep, actual_dep, arrival, status, _ = time_row
+    self.boat_name = name
     self.name = '{} at {}'.format(name, scheduled_dep)
     self.status = status.strip()
 
@@ -22,7 +23,7 @@ class BCFerriesScheduledCrossing(BCFerriesAbstractObject):
     self.actual_departure = dateutil.parser.parse(actual_dep, fuzzy=True) if actual_dep else None
     self.arrival = dateutil.parser.parse(arrival, fuzzy=True) if arrival else None
 
-    self._register_properties(['sailing_time', 'scheduled_departure', 'actual_departure', 'arrival'])
+    self._register_properties(['boat_name', 'sailing_time', 'scheduled_departure', 'actual_departure', 'arrival'])
 
   def is_early(self):
     return (self.actual_departure or self.scheduled_departure) < self.scheduled_departure
