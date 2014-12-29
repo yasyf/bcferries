@@ -1,5 +1,5 @@
 def to_int(s):
   try:
     return int(s)
-  except ValueError:
+  except:
     return 0

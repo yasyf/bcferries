@@ -57,7 +57,7 @@ schedule = r.scheduled('12:45 PM')
 schedule.status
 # u'On Time'
 schedule.sailing_time
-# u'2 HOURS'
+# datetime.timedelta(0, 7200)
 schedule.is_late()
 # False
 schedule.is_departed()
