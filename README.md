@@ -20,19 +20,21 @@ bc = BCFerries(google_maps_api_key='xxx-xxx-xxx')
 
 ```python
 terminals = bc.terminals()
-# {u'Horseshoe Bay': BCFerriesTerminal (Horseshoe Bay), u'Tsawwassen': BCFerriesTerminal (Tsawwassen)}
+# {u'Horseshoe Bay': BCFerriesTerminal(Horseshoe Bay), u'Tsawwassen': BCFerriesTerminal(Tsawwassen)}
 t = terminals['Tsawwassen']
-# BCFerriesTerminal (Tsawwassen)
+# BCFerriesTerminal(Tsawwassen)
 
 routes = t.routes()
-# {u'Tsawwassen to Duke Point': BCFerriesRoute (Tsawwassen to Duke Point)}
+# {u'Tsawwassen to Duke Point': BCFerriesRoute(Tsawwassen to Duke Point)}
 r = routes['Tsawwassen to Duke Point']
-# BCFerriesRoute (Tsawwassen to Duke Point)
+# BCFerriesRoute(Tsawwassen to Duke Point)
+r.distance()
+# Distance(61.9591068557)
 
 crossing = r.crossings()['10:45pm']
-# BCFerriesCrossing (Tsawwassen to Duke Point at 5:45pm)
+# BCFerriesCrossing(Tsawwassen to Duke Point at 5:45pm)
 crossing.capacity
-# BCFerriesCapacity (18% Full)
+# BCFerriesCapacity(18% Full)
 ```
 
 ## Fuzzy Results
@@ -50,7 +52,7 @@ There is also fuzzy time matching on keys that represent a nearby time.
 r = routes['HBay to DBay']
 schedule = r.schedule()
 schedule['6:12 PM']
-# BCFerriesScheduledCrossing (Queen of Cowichan at 6:30 PM)
+# BCFerriesScheduledCrossing(Queen of Cowichan at 6:30 PM)
 ```
 
 `datetime` objects can also be used as keys.
@@ -61,7 +63,7 @@ from datetime import datetime
 datetime.datetime.now()
 # datetime.datetime(2014, 12, 28, 10, 42, 35, 630996)
 schedule[datetime.datetime.now()]
-# BCFerriesScheduledCrossing (Coastal Renaissance at 10:40 AM)
+# BCFerriesScheduledCrossing(Coastal Renaissance at 10:40 AM)
 ```
 
 ## Caching
@@ -92,7 +94,7 @@ You can export any subset of information with a call to `to_dict` on any object.
 
 ```python
 crossing.capacity
-# BCFerriesCapacity (18% Full)
+# BCFerriesCapacity(18% Full)
 crossing.capacity.to_dict()
 # {'passenger_filled': 32, 'mixed_filled': 4, 'name': '18% Full', 'filled': 18}
 ```
