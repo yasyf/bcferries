@@ -14,4 +14,4 @@ class BCFerriesCrossing(BCFerriesAbstractObject):
     self.name = "{} at {}".format(name, time.text)
     self.capacity = BCFerriesCapacity(percent_full.find_one('a'))
 
-    self._register_properties(['route_name', 'time', 'name', 'capacity'])
+    self._register_properties(['route_name', 'time', 'capacity'])

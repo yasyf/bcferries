@@ -21,7 +21,7 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     self.from_ = api.bc.terminals().get(from_)
     self.to = api.bc.terminals().get(to)
 
-    self._register_properties(['car_waits', 'oversize_waits', 'crossings', 'schedule'])
+    self._register_properties(['car_waits', 'oversize_waits', 'crossings', 'schedule', 'distance', 'from_', 'to'])
 
   def distance(self):
     return distance(self.from_.location()[1], self.to.location()[1])

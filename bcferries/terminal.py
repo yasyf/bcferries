@@ -11,7 +11,7 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
     self.__url = url
     self._api = api
 
-    self._register_properties(['updated_at', 'routes'])
+    self._register_properties(['updated_at', 'routes', 'location'])
 
   @cacheable
   def updated_at(self):
