@@ -1,4 +1,4 @@
-import json
+import json, datetime
 from functools import wraps
 from fuzzydict import FuzzyDict
 
@@ -51,6 +51,8 @@ def cacheable(f):
       self._api.ignore_cache = False
       return result
     else:
+      if (datetime.datetime.now() - self._api.last_cleared) > self._api.cache_for:
+        self._api._flush_cache()
       return f(self, *args, **kwargs)
   return wrapper
 

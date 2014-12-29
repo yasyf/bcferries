@@ -55,12 +55,14 @@ schedule[datetime.datetime.now()]
 # BCFerriesScheduledCrossing (Coastal Renaissance at 10:40 AM)
 ```
 
-`bcferries` caches the last 128 API calls by default. You can change this to any integer you want, or set it to zero to disable caching.
+`bcferries` caches the 16 most used API calls for up to five minutes by default. You can change this behavior as below. This must be done before creating a `BCFerries` object.
 
 ```python
-import bcferries.api
+import bcferries
+import datetime
 
-bcferries.api.BCFerriesAPI.cache_last = 16
+bcferries.set_cache_size(16)
+bcferries.set_cache_timeout(datetime.timedelta(minutes=5))
 ```
 
 You can also pass any function the `ignore_cache` keyword argument to bypass the cache, or call the `flush_cache` method on `BCFerries` to clear the entire cache.
