@@ -133,11 +133,16 @@ bc.flush_cache() # wipes the cache
 
 ## Export
 
-You can export any subset of information with a call to `to_dict` on any object. You can also use `to_fuzzy_dict` and `to_json` as needed. To export all available information, call any of these methods on a `BCFerries` instance, and be prepared to wait a while.
+You can export any subset of information with a call to `to_dict` on any object. You can also use `to_fuzzy_dict` and `to_json` as needed.
+
+By default, complex objects which require further API calls will not be created, and only their names will be returned. You can disable this behavior with the `shallow` keyword argument. To export all available information, do this on a `BCFerries` instance, and be prepared to wait a while.
 
 ```python
 crossing.capacity
 # BCFerriesCapacity(18% Full)
 crossing.capacity.to_dict()
 # {'passenger_filled': 32, 'mixed_filled': 4, 'name': '18% Full', 'filled': 18}
+
+bc.to_dict() # quick
+bc.to_dict(shallow=False) # takes all day
 ```

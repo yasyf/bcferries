@@ -20,8 +20,12 @@ def cacheable(f):
 def fuzzy(f):
   @wraps(f)
   def wrapper(self, *args, **kwargs):
+    keys_only = kwargs.pop('keys_only', False)
     result = f(self, *args, **kwargs)
-    return FuzzyDict(result)
+    if keys_only:
+      return [{'name': x} for x in result.keys()]
+    else:
+      return FuzzyDict(result)
   return wrapper
 
 def lazy_cache(f):
