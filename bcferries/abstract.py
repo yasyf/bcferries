@@ -14,6 +14,8 @@ def clean_special_types(x):
     return list(x)
   if isinstance(x, Distance):
     return x.km
+  if hasattr(x, 'isoformat'):
+    return x.isoformat()
   return x
 
 class BCFerriesAbstractObject(object):
@@ -37,7 +39,6 @@ class BCFerriesAbstractObject(object):
       lambda x: dict_f({k:v.to_dict(fuzzy=fuzzy, json=json, shallow=shallow) for k,v in x.items()}),
       lambda x: [v.to_dict(fuzzy=fuzzy, json=json, shallow=shallow) for v in x],
       lambda x: x.to_dict(fuzzy=fuzzy, json=json, shallow=shallow),
-      lambda x: x.isoformat(),
       lambda x: clean_special_types(x) if json else x
     ]
     for prop in self.__props:
