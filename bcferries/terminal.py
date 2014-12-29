@@ -1,5 +1,5 @@
 from abstract import BCFerriesAbstractObject, cacheable, fuzzy
-import re, dateutil.parser
+import re, dateutil.parser, datetime
 from route import BCFerriesRoute
 
 class BCFerriesTerminal(BCFerriesAbstractObject):
@@ -29,3 +29,10 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
   @cacheable
   def route(self, name):
     return self.routes()[name]
+
+  @cacheable
+  def next_crossing(self):
+    next_crossings = [x.next_crossing() for x in self.routes().values()]
+    next_crossings = [x for x in next_crossings if x]
+    if next_crossings:
+      return min(next_crossings, key=lambda x: x.time - datetime.datetime.now())

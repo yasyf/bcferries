@@ -22,13 +22,17 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     rows = self.__time_block.find_all('tr')
     return {x.find('td').text:BCFerriesCrossing(self.name, x, self._api) for x in rows}
 
+  @cacheable
   def crossing(self, name):
     return self.crossings()[name]
 
+  @cacheable
   def next_crossing(self):
+    now = datetime.datetime.now()
     crossings = self.crossings()
+    crossings = filter(lambda x: x.time > now, crossings.values())
     if crossings:
-      return min(crossings.values(), key=lambda x: x.time - datetime.datetime.now())
+      return min(crossings, key=lambda x: x.time - now)
 
   @fuzzy
   @cacheable
