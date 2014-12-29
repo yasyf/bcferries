@@ -155,12 +155,17 @@ bc.flush_cache() <span class="pl-c"># wipes the cache</span></pre></div>
 <h2>
 <a id="export" class="anchor" href="#export" aria-hidden="true"><span class="octicon octicon-link"></span></a>Export</h2>
 
-<p>You can export any subset of information with a call to <code>to_dict</code> on any object. You can also use <code>to_fuzzy_dict</code> and <code>to_json</code> as needed. To export all available information, call any of these methods on a <code>BCFerries</code> instance, and be prepared to wait a while.</p>
+<p>You can export any subset of information with a call to <code>to_dict</code> on any object. You can also use <code>to_fuzzy_dict</code> and <code>to_json</code> as needed.</p>
+
+<p>By default, complex objects which require further API calls will not be created, and only their names will be returned. You can disable this behavior with the <code>shallow</code> keyword argument. To export all available information, do this on a <code>BCFerries</code> instance, and be prepared to wait a while.</p>
 
 <div class="highlight highlight-python"><pre>crossing.capacity
 <span class="pl-c"># BCFerriesCapacity(18% Full)</span>
 crossing.capacity.to_dict()
-<span class="pl-c"># {'passenger_filled': 32, 'mixed_filled': 4, 'name': '18% Full', 'filled': 18}</span></pre></div>
+<span class="pl-c"># {'passenger_filled': 32, 'mixed_filled': 4, 'name': '18% Full', 'filled': 18}</span>
+
+bc.to_dict() <span class="pl-c"># quick</span>
+bc.to_dict(<span class="pl-vpf">shallow</span><span class="pl-k">=</span><span class="pl-c1">False</span>) <span class="pl-c"># takes all day</span></pre></div>
         </section>
 
         <footer>
