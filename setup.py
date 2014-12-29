@@ -15,7 +15,7 @@ setup(
   long_description = readme(),
   author = 'Yasyf Mohamedali',
   author_email = 'yasyfm@gmail.com',
-  url = 'https://github.com/yasyf/bcferries',
+  url = 'http://yasyf.github.io/bcferries/',
   download_url = 'https://github.com/yasyf/bcferries/tarball/' + VERSION,
   license = 'MIT',
   keywords = ['bc ferries', 'schedule'],
