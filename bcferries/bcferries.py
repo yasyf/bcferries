@@ -37,4 +37,4 @@ class BCFerries(BCFerriesAbstractObject):
   @functools32.lru_cache(128)
   def nearest_terminal(self, *args):
     loc = self._api.geocode(*args)
-    return min(self.terminals().values(), key=lambda x: distance(loc[1:][0], x.location()[1:][0]))
+    return min(self.terminals().values(), key=lambda x: distance(loc[1], x.location()[1]))

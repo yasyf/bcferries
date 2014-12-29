@@ -3,6 +3,7 @@ from decorators import cacheable, fuzzy
 from crossing import BCFerriesCrossing
 from scheduled import BCFerriesScheduledCrossing
 from helpers import to_int
+from geopy.distance import distance
 import re, datetime
 
 class BCFerriesRoute(BCFerriesAbstractObject):
@@ -21,6 +22,9 @@ class BCFerriesRoute(BCFerriesAbstractObject):
     self.to = api.bc.terminals().get(to)
 
     self._register_properties(['car_waits', 'oversize_waits', 'crossings', 'schedule'])
+
+  def distance(self):
+    return distance(self.from_.location()[1], self.to.location()[1])
 
   @fuzzy
   @cacheable

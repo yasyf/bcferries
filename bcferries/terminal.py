@@ -41,4 +41,4 @@ class BCFerriesTerminal(BCFerriesAbstractObject):
   @lazy_cache
   def location(self):
     lat_lon = self._api.geocode("{} BC Ferry Terminal".format(self.name))
-    return self._api.reverse(lat_lon[1:][0], exactly_one=True)
+    return self._api.reverse(lat_lon[1], exactly_one=True)
