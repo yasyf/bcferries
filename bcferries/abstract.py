@@ -34,9 +34,9 @@ class BCFerriesAbstractObject(object):
     dict_f = FuzzyDict if fuzzy else dict
     operations = [
       lambda x: try_with_kwargs(x, keys_only=shallow),
-      lambda x: dict_f({k:v.to_dict() for k,v in x.items()}),
-      lambda x: [v.to_dict() for v in x],
-      lambda x: x.to_dict(),
+      lambda x: dict_f({k:v.to_dict(fuzzy=fuzzy, json=json, shallow=shallow) for k,v in x.items()}),
+      lambda x: [v.to_dict(fuzzy=fuzzy, json=json, shallow=shallow) for v in x],
+      lambda x: x.to_dict(fuzzy=fuzzy, json=json, shallow=shallow),
       lambda x: x.isoformat(),
       lambda x: clean_special_types(x) if json else x
     ]
