@@ -6,23 +6,27 @@ from helpers import to_int
 import re, datetime
 
 class BCFerriesRoute(BCFerriesAbstractObject):
-  def __init__(self, api, index):
+  def __init__(self, api, page, index):
     super(BCFerriesRoute, self).__init__(self)
 
     self._api = api
-    self.name = self._api.find_by_selector('div.ferry_name > div.td')[index].text
-    self.__time_block = self._api.find_by_selector('div.time_block > div.td > div')[index]
-    self.car_waits = to_int(self._api.find_by_selector('div.car_waits > div.td > div')[index].text)
-    self.oversize_waits = to_int(self._api.find_by_selector('div.car_waits > div.td > div')[index + 1].text)
-    self.__schedule_url = self._api.find_by_selector('div.buttons')[index].find('a').get('href')
+    self.name = page.find_by_selector('div.ferry_name > div.td')[index].text
+    self.__time_block = page.find_by_selector('div.time_block > div.td > div')[index]
+    self.car_waits = to_int(page.find_by_selector('div.car_waits > div.td > div')[index].text)
+    self.oversize_waits = to_int(page.find_by_selector('div.car_waits > div.td > div')[index + 1].text)
+    self.__schedule_url = page.find_by_selector('div.buttons')[index].find_one('a').get('href')
+
+    from_, to = self.name.split(' to ')
+    self.from_ = api.bc.terminals().get(from_)
+    self.to = api.bc.terminals().get(to)
 
     self._register_properties(['car_waits', 'oversize_waits', 'crossings', 'schedule'])
 
   @fuzzy
   @cacheable
   def crossings(self):
-    rows = self.__time_block.find_all('tr')
-    return {x.find('td').text:BCFerriesCrossing(self.name, x, self._api) for x in rows}
+    rows = self.__time_block.find_by_tag('tr')
+    return {x.find_one('td').text:BCFerriesCrossing(self.name, x, self._api) for x in rows}
 
   @cacheable
   def crossing(self, name):
@@ -39,15 +43,15 @@ class BCFerriesRoute(BCFerriesAbstractObject):
   @fuzzy
   @cacheable
   def schedule(self):
-    self._api.set_page(self.__schedule_url)
-    sailing_time = self._api.find_by_selector('div.sched_sailingtime > b')[0].text
+    page = self._api.get_page(self.__schedule_url)
+    sailing_time = page.find_by_selector('div.sched_sailingtime > b')[0].text
     sailing_time = re.match(r'SAILING TIME: (.*)', sailing_time.strip()).group(1)
-    rows = self._api.find_by_selector('table.scheduleTable > tbody > tr')
+    rows = page.find_by_selector('table.scheduleTable > tbody > tr')
     scheduled = {}
     i = 0
     while i < len(rows):
-      name = rows[i].find('td').text.strip()
-      time_row = [x.text for x in rows[i + 1].find_all('td')]
+      name = rows[i].find_one('td').text.strip()
+      time_row = [x.text for x in rows[i + 1].find_by_tag('td')]
       scheduled[time_row[0]] = BCFerriesScheduledCrossing(name, sailing_time, time_row)
       i += 2
     return scheduled
