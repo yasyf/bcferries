@@ -1,6 +1,8 @@
 # BC Ferries Python Library
 
-This is the Python client library for interacting with information published on the [BC Ferries mobile site](http://mobile.bcferries.com/). It is essentially a wrapper around a BeautifulSoup-powered scraper. Better documentation and tests are still in the works; feel free to contribute! The source code for this library can be found at [yasyf/bcferries](https://github.com/yasyf/bcferries) on GitHub.
+This is the Python client library for interacting with information published on the [BC Ferries mobile site](http://mobile.bcferries.com/). It is essentially a wrapper around a BeautifulSoup-powered scraper. Better documentation and tests are still in the works; feel free to contribute!
+
+This library is used to power project like [FerryTime](https://ferryti.me). The source code for this library can be found at [yasyf/bcferries](https://github.com/yasyf/bcferries) on GitHub.
 
 ## Installation
 
