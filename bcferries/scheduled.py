@@ -23,20 +23,21 @@ class BCFerriesScheduledCrossing(BCFerriesAbstractObject):
     self.actual_departure = dateutil.parser.parse(actual_dep, fuzzy=True) if actual_dep else None
     self.arrival = dateutil.parser.parse(arrival, fuzzy=True) if arrival else None
 
+    self.__fake_actual_departure = self.actual_departure or self.scheduled_departure
+
     self._register_properties(['boat_name', 'sailing_time', 'scheduled_departure', 'actual_departure', 'arrival'])
 
   def is_early(self):
-    return (self.actual_departure or self.scheduled_departure) < self.scheduled_departure
+    return self.__fake_actual_departure < self.scheduled_departure
 
   def is_late(self):
-    return (self.actual_departure or self.scheduled_departure) > self.scheduled_departure
+    return self.__fake_actual_departure > self.scheduled_departure
 
   def is_departed(self):
-    return (self.actual_departure or self.scheduled_departure) <= datetime.datetime.now()
+    return self.__fake_actual_departure <= datetime.datetime.now()
 
   def delta_from_schedule(self):
-    actual_departure = (self.actual_departure or self.scheduled_departure)
     if self.is_early():
-      return self.scheduled_departure - actual_departure
+      return self.scheduled_departure - self.__fake_actual_departure
     else:
-      return actual_departure - self.scheduled_departure
+      return self.__fake_actual_departure - self.scheduled_departure
