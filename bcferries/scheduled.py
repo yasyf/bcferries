@@ -33,3 +33,10 @@ class BCFerriesScheduledCrossing(BCFerriesAbstractObject):
 
   def is_departed(self):
     return (self.actual_departure or self.scheduled_departure) <= datetime.datetime.now()
+
+  def delta_from_schedule(self):
+    actual_departure = (self.actual_departure or self.scheduled_departure)
+    if self.is_early():
+      return self.scheduled_departure - actual_departure
+    else:
+      return actual_departure - self.scheduled_departure
