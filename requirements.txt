@@ -3,5 +3,5 @@ functools32==3.2.3.post1
 geopy==1.6.1
 python-dateutil==2.3
 python-Levenshtein==0.12.0
-requests==2.5.1
+requests==2.20.0
 six==1.8.0
